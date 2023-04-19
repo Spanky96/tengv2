@@ -1,0 +1,15 @@
+syntax = "proto3";
+package yang;
+
+message MatchPlayInfo {
+	int32 gameType = 1; // game_type或者gameType的写法都可以
+	int32 mapSeed = 3;
+	repeated MatchStepInfo stepInfoList = 4;
+}
+
+// 基于代码:
+message MatchStepInfo {
+	int32 chessIndex = 1;
+	int32 timeTag = 2;
+	int32 deltaTime = 3;
+}
