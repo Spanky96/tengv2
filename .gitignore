@@ -1,0 +1,5 @@
+*.swp
+.idea/
+map_data/
+node_modules/
+__pycache__/
