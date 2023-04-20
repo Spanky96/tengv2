@@ -1,5 +1,10 @@
+const { resolve } = require("path");
 const { delay } = require("./utils/helpers");
+const fs = require("fs");
 const spawn = require("child_process").spawn;
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'
+const mitmproxy = require('node-mitmproxy');
+
 
 const spawnSolverProcess = (type, id, token) => {
   return new Promise((resolve) => {
@@ -43,9 +48,45 @@ const spawnSolverProcess = (type, id, token) => {
   });
 };
 
+var token =  '';
+const getToken = async () => {
+  return new Promise((resolve) => {
+    mitmproxy.createProxy({
+      sslConnectInterceptor: (req, cltSocket, head) => true,
+      requestInterceptor: (rO, req, rep, ssl, next) => {
+        if (req.headers && req.headers.t) {
+          token = req.headers.t;
+          console.log('取到T值：' + token);
+          fs.writeFileSync('./tokens.json', JSON.stringify([token]));
+          resolve(token);
+          next();
+        } else {
+          next();
+        }
+        next();
+      },
+      port: 6666,
+      getCertSocketTimeout: 10 * 1000
+    });
+  })
+
+}
+
 const main = async () => {
-  console.log("正在读取 tokens.json");
-  const tokens = require("./tokens.json");
+  var tokens = [];
+  try {
+    console.log("正在读取 tokens.json");
+    tokens = require("./tokens.json");
+  } catch(e) {
+    tokens = [];
+  }
+   
+  if (!tokens.length) {
+    console.log("没有设置TOKEN, 开始捕捉token");
+    var t = await getToken();
+    console.log("继续进入主线");
+    tokens = [t];
+  }
 
   for (id in tokens) {
     console.log("=========================");
