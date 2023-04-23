@@ -201,6 +201,10 @@ const main = async (isTopic) => {
         }
     } else {
         token = await prompt("请输入token: ");
+        if (!token) {
+            console.log('未输入, 直接读tokens.json文件');
+            token = require("../tokens.json")[0];
+        }
     }
 
     console.log("===================================");
