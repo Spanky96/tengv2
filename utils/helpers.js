@@ -43,9 +43,9 @@ function flattenMapData(map) {
 
 function buildMatchPlayInfo(map, solution, gameType = 3) {
     let flattened = flattenMapData(map);
-    let averageDelta = Math.ceil((310 * 1000) / (solution.length - 1))
+    let averageDelta = Math.ceil((210 * 1000) / (solution.length - 1))
     const stepInfoList = solution.map((index, i) => {
-        let time = index < 0 ? getRandom(800, 1500) : getRandom(averageDelta - 200, averageDelta + 600);
+        let time = index < 0 ? getRandom(600, 800) : getRandom(averageDelta - 200, averageDelta + 200);
         return {
             chessIndex: index,
             timeTag: index >= 0 ? flattened[index].type : index,

@@ -60,7 +60,7 @@ async function sendMatchInfo(token, mapSeed2, matchPlayInfo, rankTime, isTopic =
             rank_time: rankTime,
             play_info: matchPlayInfo,
             map_seed_2: mapSeed2,
-            Version: "217",
+            Version: "264",
         } : {
             map_seed_2: mapSeed2,
             version: "217",
